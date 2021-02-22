@@ -10,25 +10,21 @@
     <div id="app">
         {{ msg }}
     </div>
-    <div id="app1">
-        {{ msg }}
-    </div>
+
     <script src="./vue.js"></script>
     <script>
-        const vm = new Vue({
+        var vm = new Vue({
             el:"#app",
             data:{
-                msg: "第一个练习"
+                msg: "改变之前"
             }
         })
-        
-        const vm1 = new Vue({
-            data:{
-                msg: "这是第二段文字"
-            }
+        setTimeout(function(){
+            vm.msg = '改变之后';
+        },3000);
+        vm.$nextTick(() => {
+            console.log(vm.msg, vm.$el.innerText);
         })
-        vm1.$mount("#app1");
     </script>
-
 </body>
 </html>
