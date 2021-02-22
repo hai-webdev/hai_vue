@@ -9,6 +9,8 @@
 <body>
     <div id="app">
         {{ msg }}
+        <br>
+        {{ obj }}
     </div>
 
     <script src="./vue.js"></script>
@@ -16,12 +18,14 @@
         var vm = new Vue({
             el:"#app",
             data:{
-                msg: "改变之前"
+                msg: [1,2,3],
+                obj: {
+                    name:"yhb",
+                    age: 18
+                }
             }
         })
-        setTimeout(function(){
-            vm.msg = '改变之后';
-        },3000);
+
         vm.$nextTick(() => {
             console.log(vm.msg, vm.$el.innerText);
         })
