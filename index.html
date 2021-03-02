@@ -8,9 +8,9 @@
 </head>
 <body>
     <div id="app">
-        {{ msg }}
-        <br>
-        {{ obj }}
+        <input type="text">
+        <button>点击</button>
+        <div class="text">这是input输出的内容</div>
     </div>
 
     <script src="./vue.js"></script>
@@ -22,13 +22,22 @@
                 obj: {
                     name:"yhb",
                     age: 18
-                }
+                },
+                vText: "这是v-text",
+                vHtml: "<h1>这是v-html</h1>",
             }
         })
-
-        vm.$nextTick(() => {
-            console.log(vm.msg, vm.$el.innerText);
-        })
+        const oInput = document.getElementsByTagName("input")[0];
+        const oBtn = document.getElementsByTagName("button")[0];
+        const oDiv = document.getElementsByClassName("text")[0];
+        let text = '';
+        oInput.oninput = function(){
+            text = this.value;
+            console.log(text);
+        }
+        oBtn.onclick = function(){
+            oDiv.textContent = text;
+        }
     </script>
 </body>
 </html>
