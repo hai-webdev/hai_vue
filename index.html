@@ -8,26 +8,27 @@
 </head>
 <body>
     <div id="app">
-        {{ msg }}
+       <button v-on="{click:addNum, mouseenter:redNum}">点击</button>
+       <p>{{ count }}</p>
     </div>
-    <div id="app1">
-        {{ msg }}
-    </div>
+
     <script src="./vue.js"></script>
     <script>
         const vm = new Vue({
             el:"#app",
             data:{
-                msg: "第一个练习"
+                count: '1'
+            },
+            methods:{
+                addNum(){
+                    this.count ++;
+                },
+                redNum(){
+                    this.count --;
+                }
             }
         })
-        
-        const vm1 = new Vue({
-            data:{
-                msg: "这是第二段文字"
-            }
-        })
-        vm1.$mount("#app1");
+
     </script>
 
 </body>
