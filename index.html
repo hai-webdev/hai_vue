@@ -1,35 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>开始学习Vue</title>
+    <title>12.练习_仿</title>
+    <link rel="stylesheet" href="./index.css">
 </head>
+
 <body>
     <div id="app">
-       <button v-on="{click:addNum, mouseenter:redNum}">点击</button>
-       <p>{{ count }}</p>
+        <div
+        class="goods"
+        v-for="(goods, goodsIndex) in goodsList"
+        :key="goods.id"
+        >
+        <div class="title">{{ goods.title }}：</div>
+        <ul class="type-list">
+            <li
+            class="type"
+            :class="{active:typeIndex === goods.index}"
+            v-for="(type, typeIndex) in goods.typeList"
+            :key="type"
+            @click="addFilter(typeIndex, goods, type, goodsIndex)"
+            >{{ type }}</li>
+        </ul>
+        </div>
+        <div class="choose-type">
+            已选条件:
+            <span class="no-goods"
+            v-show="!filterShow"
+            >暂时没有选择过滤条件</span>
+            <ul
+            v-show="filterShow"
+            class="filter-list">
+                <li
+                v-for="(filter, filterIndex) in filterArr"
+                :key="filter"
+                >{{ filter }}
+            <span class="delete-goods"
+            @click="removeFilter(filterIndex)"
+            >x</span>
+            </li>
+            </ul>
+        </div>
     </div>
 
     <script src="./vue.js"></script>
     <script>
+        const goodsList = [
+            {
+                title: '上装',
+                typeList: ['全部', '针织衫', '毛呢外套', 'T恤', '羽绒服', '棉衣', '卫衣', '风衣'],
+                id: 1,
+            },
+            {
+                title: '裤装',
+                typeList: ['全部', '牛仔裤', '小脚/铅笔裤', '休闲裤', '打底裤', '哈伦裤'],
+                id: 2,
+            },
+            {
+                title: '裙装',
+                typeList: ['全部', '连衣裙', '半身裙', '长袖连衣裙', '中长款连衣裙'],
+                id: 3,
+            }
+        ]
         const vm = new Vue({
             el:"#app",
             data:{
-                count: '1'
+                goodsList,
+                filterArr: {},
+                filterShow: false
             },
             methods:{
-                addNum(){
-                    this.count ++;
+                addFilter(typeIndex, goods, type, goodsIndex){
+                    if(type === '全部'){
+                        vm.$delete(this.filterArr, goodsIndex);
+                        this.goodsList[goodsIndex].index = 0;
+                        if(JSON.stringify(this.filterArr) === '{}'){
+                        this.filterShow = false;
+                    }
+                        return;
+                    }
+                    goods.index = typeIndex;
+                    vm.$set(this.filterArr, goodsIndex, type);
+                    this.filterShow = true;
                 },
-                redNum(){
-                    this.count --;
+                removeFilter(filterIndex){
+                    vm.$delete(this.filterArr, filterIndex);
+                    this.goodsList[filterIndex].index = 0;
+                    if(JSON.stringify(this.filterArr) === '{}'){
+                        this.filterShow = false;
+                    }
                 }
             }
         })
-
+        vm.goodsList.forEach(item => vm.$set(item, 'index', 0));
     </script>
 
 </body>
+
 </html>
